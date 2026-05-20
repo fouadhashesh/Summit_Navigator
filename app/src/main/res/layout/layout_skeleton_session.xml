@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/surface">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <View
+            android:id="@+id/skeleton_title"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:background="#E0E0E0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.6"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <View
+            android:id="@+id/skeleton_room"
+            android:layout_width="100dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="12dp"
+            android:background="#F5F5F5"
+            app:layout_constraintTop_toBottomOf="@id/skeleton_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/skeleton_time"
+            android:layout_width="60dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:background="#F5F5F5"
+            app:layout_constraintTop_toBottomOf="@id/skeleton_room"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

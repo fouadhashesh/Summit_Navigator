@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AI-assisted -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:clipToPadding="false">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+        <TextView
+            android:id="@+id/text_detail_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_detail_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/gray_text"
+            app:layout_constraintTop_toBottomOf="@id/text_detail_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_detail_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/secondary"
+            app:layout_constraintTop_toBottomOf="@id/text_detail_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/label_speaker_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_speaker_bio"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_speaker_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            android:textColor="@color/on_background"
+            app:layout_constraintTop_toBottomOf="@id/label_speaker_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_speaker_company"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/gray_text"
+            app:layout_constraintTop_toBottomOf="@id/text_speaker_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_speaker_bio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/on_background"
+            app:layout_constraintTop_toBottomOf="@id/text_speaker_company"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/btn_bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="@string/action_bookmark"
+            android:textSize="16sp"
+            app:cornerRadius="12dp" />
+
+        <Button
+            android:id="@+id/btn_delete_session"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Delete Session (Admin)"
+            android:layout_marginTop="12dp"
+            app:backgroundTint="#D32F2F"
+            app:cornerRadius="12dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_edit_session"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Edit Session (Admin)"
+            android:layout_marginTop="12dp"
+            app:cornerRadius="12dp"
+            style="?attr/materialButtonOutlinedStyle"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

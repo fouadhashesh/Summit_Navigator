@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Summit Navigator</string>
+    <string name="title_schedule">Summit Schedule</string>
+    <string name="title_session_detail">Session Detail</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_auth">Sign In</string>
+
+    <!-- Auth and Profile -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="text_go_to_profile">Profile</string>
+    <string name="action_bookmark">Bookmark</string>
+    <string name="action_unbookmark">Remove Bookmark</string>
+
+    <string name="label_speaker_bio">Speaker Biography</string>
+    <string name="label_room">Room: %1$s</string>
+    <string name="label_time">Time: %1$s</string>
+    <string name="text_refresh">Refresh Schedule</string>
+    <string name="text_loading">Syncing schedule...</string>
+    <string name="text_error">Failed to sync schedule</string>
+    <string name="text_empty_schedule">No sessions scheduled.</string>
+</resources>

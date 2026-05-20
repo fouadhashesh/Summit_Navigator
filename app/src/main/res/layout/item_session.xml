@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AI-assisted -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+    <TextView
+        android:id="@+id/text_session_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold"
+        android:textColor="@color/on_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/text_vip_marker" />
+
+    <TextView
+        android:id="@+id/text_vip_marker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIP ONLY"
+        android:textColor="#FFD700"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/text_session_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@color/secondary"
+        app:layout_constraintTop_toBottomOf="@id/text_session_title"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_session_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@color/gray_text"
+        app:layout_constraintTop_toBottomOf="@id/text_session_title"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
