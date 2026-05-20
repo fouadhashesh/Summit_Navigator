@@ -40,6 +40,10 @@ class FirestoreDataSource {
         }
     }
 
+    suspend fun updateSpeaker(speaker: Speaker) {
+        db.collection("speakers").document(speaker.speakerId).set(speaker).await()
+    }
+
     suspend fun getUserRole(userId: String): String {
         return try {
             val snapshot = db.collection("users").document(userId).get().await()

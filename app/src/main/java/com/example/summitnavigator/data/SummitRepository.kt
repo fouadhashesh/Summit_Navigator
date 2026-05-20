@@ -57,6 +57,8 @@ class SummitRepository(
         emit(firestoreDataSource.getSpeakerById(speakerId))
     }
 
+    suspend fun updateSpeaker(speaker: Speaker) = firestoreDataSource.updateSpeaker(speaker)
+
     suspend fun toggleBookmark(sessionId: String, userId: String, isBookmarked: Boolean) {
         sessionDao.updateBookmarkStatus(sessionId, isBookmarked)
         firestoreDataSource.toggleBookmark(sessionId, userId, isBookmarked)

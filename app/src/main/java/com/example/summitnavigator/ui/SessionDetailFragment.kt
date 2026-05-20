@@ -72,6 +72,7 @@ class SessionDetailFragment : Fragment() {
                                 val role = if (user != null) repository.getUserRole(user.uid) else "attendee"
                                 binding.btnDeleteSession.visibility = if (role == "admin") View.VISIBLE else View.GONE
                                 binding.btnEditSession.visibility = if (role == "admin") View.VISIBLE else View.GONE
+                                binding.btnEditSpeaker.visibility = if (role == "admin") View.VISIBLE else View.GONE
                             }
                             
                             binding.btnEditSession.setOnClickListener {
@@ -122,10 +123,37 @@ class SessionDetailFragment : Fragment() {
                             }
                         }
                         .collect { speaker ->
-                            speaker?.let {
-                                binding.textSpeakerName.text = it.name
-                                binding.textSpeakerCompany.text = it.company
-                                binding.textSpeakerBio.text = it.biography
+                            speaker?.let { currentSpeaker ->
+                                binding.textSpeakerName.text = currentSpeaker.name
+                                binding.textSpeakerCompany.text = currentSpeaker.company
+                                binding.textSpeakerBio.text = currentSpeaker.biography
+                                
+                                binding.btnEditSpeaker.setOnClickListener { _ ->
+                                    val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_speaker, null)
+                                    val editName = dialogView.findViewById<android.widget.EditText>(R.id.edit_speaker_name)
+                                    val editCompany = dialogView.findViewById<android.widget.EditText>(R.id.edit_speaker_company)
+                                    val editBio = dialogView.findViewById<android.widget.EditText>(R.id.edit_speaker_bio)
+                                    
+                                    editName.setText(currentSpeaker.name)
+                                    editCompany.setText(currentSpeaker.company)
+                                    editBio.setText(currentSpeaker.biography)
+                                    
+                                    androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                                        .setTitle("Edit Speaker")
+                                        .setView(dialogView)
+                                        .setPositiveButton("Save") { _, _ ->
+                                            val updatedSpeaker = currentSpeaker.copy(
+                                                name = editName.text.toString(),
+                                                company = editCompany.text.toString(),
+                                                biography = editBio.text.toString()
+                                            )
+                                            viewLifecycleOwner.lifecycleScope.launch {
+                                                repository.updateSpeaker(updatedSpeaker)
+                                            }
+                                        }
+                                        .setNegativeButton("Cancel", null)
+                                        .show()
+                                }
                             }
                         }
                 }
