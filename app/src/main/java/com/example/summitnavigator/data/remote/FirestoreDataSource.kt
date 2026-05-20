@@ -22,6 +22,14 @@ class FirestoreDataSource {
             }
     }
 
+    fun getSpeakersFlow(): Flow<List<Speaker>> {
+        return db.collection("speakers")
+            .snapshots()
+            .map { snapshot ->
+                snapshot.toObjects(Speaker::class.java)
+            }
+    }
+
     suspend fun getSessionById(sessionId: String): Session? {
         return try {
             val snapshot = db.collection("sessions").document(sessionId).get().await()

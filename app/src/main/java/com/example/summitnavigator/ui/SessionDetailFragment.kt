@@ -79,11 +79,33 @@ class SessionDetailFragment : Fragment() {
                                 val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_session, null)
                                 val editTitle = dialogView.findViewById<android.widget.EditText>(R.id.edit_title)
                                 val editRoom = dialogView.findViewById<android.widget.EditText>(R.id.edit_room)
+                                val editTime = dialogView.findViewById<android.widget.EditText>(R.id.edit_time)
                                 val checkVip = dialogView.findViewById<android.widget.CheckBox>(R.id.check_vip)
 
                                 editTitle.setText(currentSession.title)
                                 editRoom.setText(currentSession.roomLocation)
                                 checkVip.isChecked = currentSession.isVipOnly
+                                
+                                var updatedTimestamp = currentSession.timestamp
+                                val timeFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+                                editTime.setText(timeFormat.format(java.util.Date(updatedTimestamp)))
+
+                                editTime.setOnClickListener {
+                                    val calendar = java.util.Calendar.getInstance()
+                                    calendar.timeInMillis = updatedTimestamp
+                                    android.app.TimePickerDialog(
+                                        requireContext(),
+                                        { _, hourOfDay, minute ->
+                                            calendar.set(java.util.Calendar.HOUR_OF_DAY, hourOfDay)
+                                            calendar.set(java.util.Calendar.MINUTE, minute)
+                                            updatedTimestamp = calendar.timeInMillis
+                                            editTime.setText(timeFormat.format(java.util.Date(updatedTimestamp)))
+                                        },
+                                        calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                                        calendar.get(java.util.Calendar.MINUTE),
+                                        true
+                                    ).show()
+                                }
 
                                 androidx.appcompat.app.AlertDialog.Builder(requireContext())
                                     .setTitle("Edit Session")
@@ -92,6 +114,7 @@ class SessionDetailFragment : Fragment() {
                                         val updatedSession = currentSession.copy(
                                             title = editTitle.text.toString(),
                                             roomLocation = editRoom.text.toString(),
+                                            timestamp = updatedTimestamp,
                                             isVipOnly = checkVip.isChecked
                                         )
                                         viewLifecycleOwner.lifecycleScope.launch {

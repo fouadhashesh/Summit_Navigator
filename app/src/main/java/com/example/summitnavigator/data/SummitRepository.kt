@@ -2,6 +2,8 @@ package com.example.summitnavigator.data
 
 import com.example.summitnavigator.data.local.SessionDao
 import com.example.summitnavigator.data.local.SessionEntity
+import com.example.summitnavigator.data.local.SpeakerDao
+import com.example.summitnavigator.data.local.SpeakerEntity
 import com.example.summitnavigator.data.model.Session
 import com.example.summitnavigator.data.model.Speaker
 import com.example.summitnavigator.data.remote.FirestoreDataSource
@@ -15,26 +17,42 @@ import kotlinx.coroutines.launch
 
 class SummitRepository(
     private val firestoreDataSource: FirestoreDataSource,
-    private val sessionDao: SessionDao
+    private val sessionDao: SessionDao,
+    private val speakerDao: SpeakerDao
 ) {
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            firestoreDataSource.getSessionsFlow().collect { remoteSessions ->
-                val localSessions = sessionDao.getAllSessions().firstOrNull() ?: emptyList()
-                val localBookmarkMap = localSessions.associateBy({ it.sessionId }, { it.isBookmarked })
-                
-                val entities = remoteSessions.map { session ->
-                    SessionEntity(
-                        sessionId = session.sessionId,
-                        speakerOwnerId = session.speakerOwnerId,
-                        title = session.title,
-                        roomLocation = session.roomLocation,
-                        timestamp = session.timestamp,
-                        isVipOnly = session.isVipOnly,
-                        isBookmarked = localBookmarkMap[session.sessionId] ?: false
-                    )
+            launch {
+                firestoreDataSource.getSessionsFlow().collect { remoteSessions ->
+                    val localSessions = sessionDao.getAllSessions().firstOrNull() ?: emptyList()
+                    val localBookmarkMap = localSessions.associateBy({ it.sessionId }, { it.isBookmarked })
+                    
+                    val entities = remoteSessions.map { session ->
+                        SessionEntity(
+                            sessionId = session.sessionId,
+                            speakerOwnerId = session.speakerOwnerId,
+                            title = session.title,
+                            roomLocation = session.roomLocation,
+                            timestamp = session.timestamp,
+                            isVipOnly = session.isVipOnly,
+                            isBookmarked = localBookmarkMap[session.sessionId] ?: false
+                        )
+                    }
+                    sessionDao.insertSessions(entities)
                 }
-                sessionDao.insertSessions(entities)
+            }
+            launch {
+                firestoreDataSource.getSpeakersFlow().collect { remoteSpeakers ->
+                    val entities = remoteSpeakers.map { speaker ->
+                        SpeakerEntity(
+                            speakerId = speaker.speakerId,
+                            name = speaker.name,
+                            biography = speaker.biography,
+                            company = speaker.company
+                        )
+                    }
+                    speakerDao.insertSpeakers(entities)
+                }
             }
         }
     }
@@ -53,8 +71,14 @@ class SummitRepository(
 
     fun getSessionById(sessionId: String): Flow<Session?> = sessionDao.getSessionById(sessionId).map { it?.toDomainModel() }
     
-    fun getSpeakerById(speakerId: String): Flow<Speaker?> = flow {
-        emit(firestoreDataSource.getSpeakerById(speakerId))
+    fun getSpeakerById(speakerId: String): Flow<Speaker?> = speakerDao.getSpeakerById(speakerId).map { it?.toDomainModel() }
+
+    fun getAllSpeakers(): Flow<List<Speaker>> = speakerDao.getAllSpeakers().map { entities -> 
+        entities.map { it.toDomainModel() } 
+    }
+
+    fun getSessionsForSpeaker(speakerId: String): Flow<List<Session>> = sessionDao.getAllSessions().map { entities ->
+        entities.filter { it.speakerOwnerId == speakerId }.map { it.toDomainModel() }
     }
 
     suspend fun updateSpeaker(speaker: Speaker) = firestoreDataSource.updateSpeaker(speaker)
@@ -90,5 +114,12 @@ class SummitRepository(
         timestamp = timestamp,
         isVipOnly = isVipOnly,
         isBookmarked = isBookmarked
+    )
+
+    private fun SpeakerEntity.toDomainModel() = Speaker(
+        speakerId = speakerId,
+        name = name,
+        biography = biography,
+        company = company
     )
 }

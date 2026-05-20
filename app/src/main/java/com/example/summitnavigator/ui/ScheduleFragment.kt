@@ -82,21 +82,72 @@ class ScheduleFragment : Fragment() {
             findNavController().navigate(R.id.action_scheduleFragment_to_myAgendaFragment)
         }
         
+        binding.btnSpeakers.setOnClickListener {
+            findNavController().navigate(R.id.action_scheduleFragment_to_speakersFragment)
+        }
+        
         binding.fabAddSession.setOnClickListener {
-            // For now, just generate a random session for demo purposes
-            val dummySession = Session(
-                sessionId = "sess_" + System.currentTimeMillis(),
-                speakerOwnerId = "s1",
-                title = "New Admin Session",
-                roomLocation = "Admin Room",
-                timestamp = System.currentTimeMillis(),
-                isVipOnly = true
-            )
-            viewLifecycleOwner.lifecycleScope.launch {
-                val app = requireActivity().application as com.example.summitnavigator.SummitApp
-                app.repository.createSession(dummySession)
-                Toast.makeText(requireContext(), "Session Created", Toast.LENGTH_SHORT).show()
+            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_session, null)
+            val speakerName = dialogView.findViewById<android.widget.EditText>(R.id.add_speaker_name)
+            val speakerCompany = dialogView.findViewById<android.widget.EditText>(R.id.add_speaker_company)
+            val speakerBio = dialogView.findViewById<android.widget.EditText>(R.id.add_speaker_bio)
+            
+            val sessionTitle = dialogView.findViewById<android.widget.EditText>(R.id.add_session_title)
+            val sessionRoom = dialogView.findViewById<android.widget.EditText>(R.id.add_session_room)
+            val sessionTime = dialogView.findViewById<android.widget.EditText>(R.id.add_session_time)
+            val checkVip = dialogView.findViewById<android.widget.CheckBox>(R.id.add_session_vip)
+            
+            var selectedTimestamp = System.currentTimeMillis()
+            val timeFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+            sessionTime.setText(timeFormat.format(java.util.Date(selectedTimestamp)))
+
+            sessionTime.setOnClickListener {
+                val calendar = java.util.Calendar.getInstance()
+                calendar.timeInMillis = selectedTimestamp
+                android.app.TimePickerDialog(
+                    requireContext(),
+                    { _, hourOfDay, minute ->
+                        calendar.set(java.util.Calendar.HOUR_OF_DAY, hourOfDay)
+                        calendar.set(java.util.Calendar.MINUTE, minute)
+                        selectedTimestamp = calendar.timeInMillis
+                        sessionTime.setText(timeFormat.format(java.util.Date(selectedTimestamp)))
+                    },
+                    calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                    calendar.get(java.util.Calendar.MINUTE),
+                    true
+                ).show()
             }
+
+            androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Add New Session")
+                .setView(dialogView)
+                .setPositiveButton("Save") { _, _ ->
+                    val newSpeakerId = java.util.UUID.randomUUID().toString()
+                    val newSpeaker = com.example.summitnavigator.data.model.Speaker(
+                        speakerId = newSpeakerId,
+                        name = speakerName.text.toString(),
+                        company = speakerCompany.text.toString(),
+                        biography = speakerBio.text.toString()
+                    )
+                    
+                    val newSession = Session(
+                        sessionId = java.util.UUID.randomUUID().toString(),
+                        speakerOwnerId = newSpeakerId,
+                        title = sessionTitle.text.toString(),
+                        roomLocation = sessionRoom.text.toString(),
+                        timestamp = selectedTimestamp,
+                        isVipOnly = checkVip.isChecked
+                    )
+                    
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        val app = requireActivity().application as com.example.summitnavigator.SummitApp
+                        app.repository.updateSpeaker(newSpeaker)
+                        app.repository.createSession(newSession)
+                        Toast.makeText(requireContext(), "Session & Speaker Created", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
 
         // Observe schedule and status changes

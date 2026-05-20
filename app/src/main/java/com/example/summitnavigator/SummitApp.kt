@@ -18,6 +18,6 @@ class SummitApp : Application() {
         ).fallbackToDestructiveMigration()
         .build()
         val firestoreDataSource = FirestoreDataSource()
-        SummitRepository(firestoreDataSource, database.sessionDao())
+        SummitRepository(firestoreDataSource, database.sessionDao(), database.speakerDao())
     }
 }

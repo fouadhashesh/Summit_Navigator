@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_scheduleFragment_to_myAgendaFragment"
             app:destination="@id/myAgendaFragment" />
+        <action
+            android:id="@+id/action_scheduleFragment_to_speakersFragment"
+            app:destination="@id/speakersFragment" />
     </fragment>
 
     <fragment
@@ -63,6 +66,29 @@
         tools:layout="@layout/fragment_my_agenda">
         <action
             android:id="@+id/action_myAgendaFragment_to_sessionDetailFragment"
+            app:destination="@id/sessionDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/speakersFragment"
+        android:name="com.example.summitnavigator.ui.speakers.SpeakersFragment"
+        android:label="Speakers"
+        tools:layout="@layout/fragment_speakers">
+        <action
+            android:id="@+id/action_speakersFragment_to_speakerDetailFragment"
+            app:destination="@id/speakerDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/speakerDetailFragment"
+        android:name="com.example.summitnavigator.ui.speakers.SpeakerDetailFragment"
+        android:label="Speaker Detail"
+        tools:layout="@layout/fragment_speaker_detail">
+        <argument
+            android:name="speakerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_speakerDetailFragment_to_sessionDetailFragment"
             app:destination="@id/sessionDetailFragment" />
     </fragment>
 </navigation>
